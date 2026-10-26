@@ -1,0 +1,57 @@
+services:
+  servidor1:
+    build: .
+    container_name: servidor1
+    restart: always
+    ports:
+      - "2201:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.25.0.11
+
+  servidor2:
+    build: .
+    container_name: servidor2
+    restart: always
+    ports:
+      - "2202:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.25.0.12
+
+  servidor3:
+    build: .
+    container_name: servidor3
+    restart: always
+    ports:
+      - "2203:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.25.0.13
+
+  servidor4:
+    build: .
+    container_name: servidor4
+    restart: always
+    ports:
+      - "2204:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.25.0.14
+
+  servidor5:
+    build: .
+    container_name: servidor5
+    restart: always
+    ports:
+      - "2205:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.25.0.15
+
+networks:
+  ansible_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

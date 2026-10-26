@@ -1,0 +1,59 @@
+---
+- name: Automatización de configuración de servidores con Ansible
+  hosts: servidores
+  become: true
+  tasks:
+    - name: Actualizar los paquetes de APT del sistema operativo
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Crear el usuario itla en cada servidor
+      user:
+        name: itla
+        state: present
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Crear una carpeta llamada app
+      file:
+        path: /app
+        state: directory
+        owner: itla
+        group: itla
+        mode: '0755'
+
+    - name: Crear un archivo hola.txt en la carpeta app en cada servidor
+      copy:
+        dest: /app/hola.txt
+        content: |
+          Hola Mundo desde Ansible
+          Servidor: {{ inventory_hostname }}
+        owner: itla
+        group: itla
+        mode: '0644'
+
+    - name: Crear carpeta app en el home del usuario itla
+      file:
+        path: /home/itla/app
+        state: directory
+        owner: itla
+        group: itla
+        mode: '0755'
+
+    - name: Crear archivo hola.txt en /home/itla/app
+      copy:
+        dest: /home/itla/app/hola.txt
+        content: |
+          Hola Mundo desde Ansible
+          Servidor: {{ inventory_hostname }}
+        owner: itla
+        group: itla
+        mode: '0644'
+
+    - name: Instalar la aplicacion cowsay y htop en cada servidor
+      apt:
+        name:
+          - cowsay
+          - htop
+        state: present
